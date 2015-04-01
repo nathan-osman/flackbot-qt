@@ -73,7 +73,7 @@
       </property>
       <property name="url">
        <url>
-        <string>http://stackexchange.com/users/login?returnurl=%2Fusers%2Fchat-login</string>
+        <string>qrc:/index.html</string>
        </url>
       </property>
      </widget>
