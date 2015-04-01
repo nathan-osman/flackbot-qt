@@ -3,6 +3,7 @@ project(flackbot-qt)
 
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5WebKit REQUIRED)
+find_package(Qt5WebKitWidgets REQUIRED)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
@@ -20,6 +21,7 @@ add_executable(flackbot-qt WIN32 ${SRC} ${UI})
 qt5_use_modules(flackbot-qt
     Widgets
     WebKit
+    WebKitWidgets
 )
 
 install(TARGETS flackbot-qt

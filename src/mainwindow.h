@@ -26,6 +26,7 @@
 #define FB_MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QUrl>
 
 #include "ui_mainwindow.h"
 
@@ -36,6 +37,12 @@ class MainWindow : public QMainWindow, public Ui::MainWindow
 public:
 
     MainWindow();
+
+private Q_SLOTS:
+
+    void onUrlChanged(const QUrl &url);
+
+    void loadUrl();
 };
 
 #endif // FB_MAINWINDOW_H
