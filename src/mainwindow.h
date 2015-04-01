@@ -40,9 +40,14 @@ public:
 
 private Q_SLOTS:
 
+    void onLoadFinished();
     void onUrlChanged(const QUrl &url);
-
+    void onJavaScriptWindowObjectCleared();
     void loadUrl();
+
+private:
+
+    QString mJavaScript;
 };
 
 #endif // FB_MAINWINDOW_H

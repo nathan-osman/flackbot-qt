@@ -22,7 +22,10 @@
  * IN THE SOFTWARE.
  **/
 
+#include <QFile>
 #include <QLineEdit>
+#include <QWebFrame>
+#include <QWebSettings>
 
 #include "cookiejar.h"
 #include "mainwindow.h"
@@ -32,19 +35,41 @@ MainWindow::MainWindow()
     setupUi(this);
 
     webView->page()->networkAccessManager()->setCookieJar(new CookieJar);
+    webView->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
 
+    connect(webView, SIGNAL(loadFinished(bool)), this, SLOT(onLoadFinished()));
     connect(webView, SIGNAL(loadFinished(bool)), progressBar, SLOT(hide()));
     connect(webView, SIGNAL(loadProgress(int)), progressBar, SLOT(setValue(int)));
     connect(webView, SIGNAL(loadStarted()), progressBar, SLOT(show()));
     connect(webView, SIGNAL(urlChanged(QUrl)), this, SLOT(onUrlChanged(QUrl)));
 
+    connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()),
+            this, SLOT(onJavaScriptWindowObjectCleared()));
+
     connect(urlEdit, SIGNAL(returnPressed()), this, SLOT(loadUrl()));
     connect(goButton, SIGNAL(clicked()), this, SLOT(loadUrl()));
+
+    // Load the JavaScript from the resource file
+    QFile file(":/bridge.js");
+    file.open(QIODevice::ReadOnly);
+    mJavaScript = file.readAll();
+}
+
+void MainWindow::onLoadFinished()
+{
+    // Inject the bridge after the page has loaded
+    webView->page()->mainFrame()->evaluateJavaScript(mJavaScript);
 }
 
 void MainWindow::onUrlChanged(const QUrl &url)
 {
     urlEdit->setText(url.toString());
+}
+
+void MainWindow::onJavaScriptWindowObjectCleared()
+{
+    // Remove WebSockets so that chat is forced to use normal HTTP requests
+    webView->page()->mainFrame()->evaluateJavaScript("window.WebSocket = null;");
 }
 
 void MainWindow::loadUrl()
