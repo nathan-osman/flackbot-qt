@@ -67,7 +67,7 @@
      <widget class="QWebView" name="webView">
       <property name="url">
        <url>
-        <string>about:blank</string>
+        <string>http://stackexchange.com/users/login?returnurl=%2Fusers%2Fchat-login</string>
        </url>
       </property>
      </widget>
@@ -79,9 +79,6 @@
         <width>16777215</width>
         <height>6</height>
        </size>
-      </property>
-      <property name="visible">
-       <bool>false</bool>
       </property>
       <property name="styleSheet">
        <string notr="true">QProgressBar {
