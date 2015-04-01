@@ -22,38 +22,35 @@
  * IN THE SOFTWARE.
  **/
 
-#include <QLineEdit>
+#include <QNetworkCookie>
+#include <QSettings>
+#include <QVariantList>
 
 #include "cookiejar.h"
-#include "mainwindow.h"
 
-MainWindow::MainWindow()
+CookieJar::CookieJar()
 {
-    setupUi(this);
+    // Load the list of cookies
+    QVariantList rawCookies = QSettings().value("Cookies").toList();
 
-    webView->page()->networkAccessManager()->setCookieJar(new CookieJar);
-
-    connect(webView, SIGNAL(loadFinished(bool)), progressBar, SLOT(hide()));
-    connect(webView, SIGNAL(loadProgress(int)), progressBar, SLOT(setValue(int)));
-    connect(webView, SIGNAL(loadStarted()), progressBar, SLOT(show()));
-    connect(webView, SIGNAL(urlChanged(QUrl)), this, SLOT(onUrlChanged(QUrl)));
-
-    connect(urlEdit, SIGNAL(returnPressed()), this, SLOT(loadUrl()));
-    connect(goButton, SIGNAL(clicked()), this, SLOT(loadUrl()));
-}
-
-void MainWindow::onUrlChanged(const QUrl &url)
-{
-    urlEdit->setText(url.toString());
-}
-
-void MainWindow::loadUrl()
-{
-    // Be nice and add the 'http://' prefix if it is missing
-    QString url = urlEdit->text();
-    if(!url.startsWith("http://") && !url.startsWith("https://")) {
-        url = "http://" + url;
+    // Read and parse each of the cookies
+    QList<QNetworkCookie> cookies;
+    foreach(QVariant cookie, rawCookies) {
+        cookies.append(QNetworkCookie::parseCookies(cookie.toByteArray()));
     }
 
-    webView->setUrl(QUrl(url));
+    // Set the list
+    setAllCookies(cookies);
+}
+
+CookieJar::~CookieJar()
+{
+    // Build a list of all cookies
+    QVariantList cookies;
+    foreach(QNetworkCookie cookie, allCookies()) {
+        cookies.append(cookie.toRawForm());
+    }
+
+    // Store the list
+    QSettings().setValue("Cookies", cookies);
 }

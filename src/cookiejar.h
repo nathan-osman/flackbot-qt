@@ -22,38 +22,19 @@
  * IN THE SOFTWARE.
  **/
 
-#include <QLineEdit>
+#ifndef FB_COOKIEJAR_H
+#define FB_COOKIEJAR_H
 
-#include "cookiejar.h"
-#include "mainwindow.h"
+#include <QNetworkCookieJar>
 
-MainWindow::MainWindow()
+class CookieJar : public QNetworkCookieJar
 {
-    setupUi(this);
+    Q_OBJECT
 
-    webView->page()->networkAccessManager()->setCookieJar(new CookieJar);
+public:
 
-    connect(webView, SIGNAL(loadFinished(bool)), progressBar, SLOT(hide()));
-    connect(webView, SIGNAL(loadProgress(int)), progressBar, SLOT(setValue(int)));
-    connect(webView, SIGNAL(loadStarted()), progressBar, SLOT(show()));
-    connect(webView, SIGNAL(urlChanged(QUrl)), this, SLOT(onUrlChanged(QUrl)));
+    CookieJar();
+    virtual ~CookieJar();
+};
 
-    connect(urlEdit, SIGNAL(returnPressed()), this, SLOT(loadUrl()));
-    connect(goButton, SIGNAL(clicked()), this, SLOT(loadUrl()));
-}
-
-void MainWindow::onUrlChanged(const QUrl &url)
-{
-    urlEdit->setText(url.toString());
-}
-
-void MainWindow::loadUrl()
-{
-    // Be nice and add the 'http://' prefix if it is missing
-    QString url = urlEdit->text();
-    if(!url.startsWith("http://") && !url.startsWith("https://")) {
-        url = "http://" + url;
-    }
-
-    webView->setUrl(QUrl(url));
-}
+#endif // FB_COOKIEJAR_H

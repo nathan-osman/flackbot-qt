@@ -9,6 +9,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 
 set(SRC
+    src/cookiejar.cpp
     src/main.cpp
     src/mainwindow.cpp
 )
