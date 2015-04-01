@@ -35,7 +35,10 @@ MainWindow::MainWindow()
     setupUi(this);
 
     webView->page()->networkAccessManager()->setCookieJar(new CookieJar);
+
+    // Enable the web inspector and local storage
     webView->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
+    webView->settings()->setAttribute(QWebSettings::LocalStorageEnabled, true);
 
     connect(webView, SIGNAL(loadFinished(bool)), this, SLOT(onLoadFinished()));
     connect(webView, SIGNAL(loadFinished(bool)), progressBar, SLOT(hide()));
