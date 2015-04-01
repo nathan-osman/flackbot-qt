@@ -1,6 +1,6 @@
 ## FlackBot Qt Host
 
-This application provides a Qt application that acts as a host for the FlackBot JavaScript code.
+This project provides a Qt application that acts as a host for the FlackBot JavaScript code.
 
 ### Building the Application
 
