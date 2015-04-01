@@ -12,7 +12,11 @@ set(SRC
     src/mainwindow.cpp
 )
 
-add_executable(flackbot-qt WIN32 ${SRC})
+qt5_wrap_ui(UI
+    src/mainwindow.ui
+)
+
+add_executable(flackbot-qt WIN32 ${SRC} ${UI})
 qt5_use_modules(flackbot-qt
     Widgets
     WebKit

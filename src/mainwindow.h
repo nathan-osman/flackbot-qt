@@ -27,13 +27,15 @@
 
 #include <QMainWindow>
 
-class MainWindow : public QMainWindow
+#include "ui_mainwindow.h"
+
+class MainWindow : public QMainWindow, public Ui::MainWindow
 {
     Q_OBJECT
 
 public:
 
-    //...
+    MainWindow();
 };
 
 #endif // FB_MAINWINDOW_H
