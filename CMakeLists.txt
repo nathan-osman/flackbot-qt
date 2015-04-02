@@ -22,7 +22,7 @@ qt5_wrap_ui(UI
     src/mainwindow.ui
 )
 
-add_executable(flackbot-qt WIN32 ${SRC} ${RES} ${UI})
+add_executable(flackbot-qt ${SRC} ${RES} ${UI})
 qt5_use_modules(flackbot-qt
     Widgets
     WebKit
